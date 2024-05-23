@@ -1,0 +1,2112 @@
+﻿syntax = "proto3";
+package MQRPC;
+option csharp_namespace = "DQTRPC";
+message Empty { }
+message Timestamp {
+  int64 seconds = 1;
+  int32 nanos = 2;
+}
+enum OperationType {
+  None_OperationType = 0;
+  Create_OperationType = 1;
+  Update_OperationType = 2;
+  Delete_OperationType = 3;
+}
+enum RankingStatus {
+  Ok_RankingStatus = 0;
+  OutOfRange_RankingStatus = 1;
+  NotRanking_RankingStatus = 2;
+}
+enum NewsCategory {
+  Unknown_NewsCategory = 0;
+  Important_NewsCategory = 1;
+  Renewal_NewsCategory = 2;
+  Expiration_NewsCategory = 3;
+  Maintenance_NewsCategory = 4;
+  Recover_NewsCategory = 5;
+  Campaign_NewsCategory = 6;
+  Incident_NewsCategory = 7;
+  Event_NewsCategory = 8;
+  Infomation_NewsCategory = 9;
+  Others_NewsCategory = 10;
+}
+enum JewelPurchaseStatus {
+  Success_JewelPurchaseStatus = 0;
+  Failure_JewelPurchaseStatus = 1;
+  Pending_JewelPurchaseStatus = 2;
+  AlreadyProcessed_JewelPurchaseStatus = 3;
+  PurchaseExceeded_JewelPurchaseStatus = 4;
+  FraudulentRefundsUser_JewelPurchaseStatus = 5;
+  FraudulentReceipt_JewelPurchaseStatus = 6;
+}
+enum AcquisitionDirection {
+  Success_AcquisitionDirection = 0;
+  Failure_AcquisitionDirection = 1;
+}
+enum DefeatReasonType {
+  Unset_DefeatReasonType = 0;
+  Annihilation_DefeatReasonType = 1;
+  Timeout_DefeatReasonType = 2;
+  Retire_DefeatReasonType = 3;
+}
+enum Status {
+  Status1 = 0;
+  Status2 = 1;
+  Status3 = 2;
+  Status4 = 3;
+}
+message Achievement {
+  uint32 MasterAchievementGroupCode = 1;
+  uint32 MasterAchievementCode = 2;
+  Timestamp UnlockedAt = 3;
+}
+message AchievementGroup {
+  uint32 MasterAchievementGroupCode = 1;
+  Schedule RecentSchedule = 2;
+  bool Scheduled = 3;
+}
+message AchievementProgress {
+  uint32 MasterAchievementGroupCode = 1;
+  int32 RepeatType = 2;
+  int32 ConditionType = 3;
+  uint32 ConditionTargetCode = 4;
+  int32 CurrentValue = 5;
+  Timestamp ResetAt = 6;
+}
+message AchievementLog {
+  uint32 MasterAchievementCode = 1;
+  Timestamp UnlockedAt = 2;
+}
+message AchievementProgressOperation {
+  OperationType Type = 1;
+  AchievementProgress Current = 2;
+  repeated AchievementProgressChange Changes = 3;
+}
+message AchievementProgressChange {
+  uint32 Id = 1;
+  int32 CurrentValue = 2;
+}
+message AchievementsGroupListRequest {
+}
+message AchievementsGroupListReply {
+  repeated AchievementGroup AchievementGroups = 1;
+}
+message AchievementsUnlockedListRequest {
+  repeated uint32 MasterAchievementGroupCodes = 1;
+  int32 PageNumber = 2;
+  int32 ResultPerPage = 3;
+}
+message AchievementsUnlockedListReply {
+  repeated Achievement Achievements = 1;
+}
+message AchievementsProgressesRequest {
+  repeated uint32 MasterAchievementGroupCodes = 1;
+}
+message AchievementsProgressesReply {
+  repeated AchievementProgress Progresses = 1;
+}
+message AchievementsUnlockReply {
+  repeated Achievement UnlockedAchievements = 1;
+  repeated MonsterOperation MonsterOperations = 2;
+  repeated ActiveSkillOperation ActiveSkillOperations = 3;
+  repeated EquipmentOperation EquipmentOperations = 4;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 5;
+  repeated ConsumableItemOperation ConsumableItemOperations = 6;
+  UserOperation UserOperation = 7;
+  StaminaOperation StaminaOperation = 8;
+  repeated PresentItemOperation PresentItemOperations = 9;
+  repeated AchievementProgressOperation AchievementProgressOperations = 10;
+  repeated PointCardOperation PointCardOperations = 11;
+  repeated ProfileIconOperation ProfileIconOperations = 12;
+}
+message AchievementsSpecifiedUnlockRequest {
+  repeated uint32 MasterAchievementCodes = 1;
+}
+message AchievementsUnlockableExistingReply {
+  bool Existing = 1;
+}
+message AchievementsUnlockedLogListRequest {
+  int32 PageNumber = 1;
+  int32 ResultPerPage = 2;
+}
+message AchievementsUnlockedLogListReply {
+  repeated AchievementLog AchievementLogs = 1;
+}
+message ActionLogReasonCode {
+  uint32 Value = 1;
+}
+message ActionLog {
+  uint64 LogId = 1;
+  uint32 MasterCode = 2;
+  int32 ChangedQuantity = 3;
+  uint32 ReasonType = 4;
+  ActionLogReasonCode ReasonCode = 5;
+  string Reason = 6;
+  Timestamp CreatedAt = 7;
+}
+message MonsterCreateChange {
+}
+message MonsterAwakenChange {
+  uint32 BeforeAwakeningPoint = 1;
+  uint32 AfterAwakeningPoint = 2;
+}
+message MonsterActionLog {
+  uint64 LogId = 1;
+  uint32 MasterAllyMonsterCode = 2;
+  uint32 ReasonType = 3;
+  ActionLogReasonCode ReasonCode = 4;
+  string Reason = 5;
+  uint32 ChangedType = 6;
+  MonsterCreateChange CreateChange = 7;
+  MonsterAwakenChange AwakenChange = 8;
+  Timestamp CreatedAt = 9;
+}
+message PageToken {
+  uint64 LogId = 1;
+  bool Asc = 2;
+}
+message ActionLogPage {
+  PageToken Token = 1;
+  uint32 Limit = 2;
+}
+message ActionLogsGainedListRequest {
+  ActionLogPage ConsumableItemLogsPage = 1;
+  ActionLogPage EquipmentLogsPage = 2;
+  ActionLogPage JewelLogsPage = 3;
+  ActionLogPage MonsterLogsPage = 4;
+  ActionLogPage ProfileIconLogsPage = 5;
+}
+message ActionLogsGainedListReply {
+  repeated ActionLog ConsumableItemLogs = 1;
+  repeated ActionLog EquipmentLogs = 2;
+  repeated ActionLog JewelLogs = 3;
+  repeated MonsterActionLog MonsterLogs = 4;
+  repeated ActionLog ProfileIconLogs = 5;
+}
+message ActionLogsConsumedListRequest {
+  ActionLogPage ConsumableItemLogsPage = 1;
+  ActionLogPage JewelLogsPage = 2;
+  ActionLogPage EquipmentLogsPage = 3;
+}
+message ActionLogsConsumedListReply {
+  repeated ActionLog ConsumableItemLogs = 1;
+  repeated ActionLog JewelLogs = 2;
+  repeated ActionLog EquipmentLogs = 3;
+}
+message ActiveSkill {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 MasterActiveSkillCode = 2;
+  uint32 EnhancementStage = 3;
+  uint32 Accumulation = 4;
+}
+message ActiveSkillOperation {
+  OperationType Type = 1;
+  ActiveSkill Current = 2;
+  repeated ActiveSkillChange Changes = 3;
+}
+message ActiveSkillChange {
+  uint32 Id = 1;
+  int32 EnhancementStage = 2;
+  int32 Accumulation = 3;
+}
+message ActiveSkillsAllRequest {
+  repeated uint32 MasterAllyMonsterCodes = 1;
+  repeated uint32 MasterActiveSkillCodes = 2;
+}
+message ActiveSkillsAllReply {
+  repeated ActiveSkill ActiveSkills = 1;
+}
+message ActiveSkillsEnhanceRequest {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 LearningMasterActiveSkillCode = 2;
+  uint32 MasterConsumableItemCode = 3;
+  uint32 TrialCount = 4;
+}
+message ActiveSkillsEnhanceReply {
+  bool Success = 1;
+  ActiveSkillOperation ActiveSkillOperation = 2;
+  repeated ConsumableItemOperation ConsumableItemOperations = 3;
+  repeated AchievementProgressOperation AchievementProgressOperations = 4;
+  repeated PointCardOperation PointCardOperations = 10;
+}
+message ActiveSkillsLearnRequest {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 MasterConsumableItemCode = 2;
+  bool IsOverwrite = 3;
+  uint32 ForgettingMasterActiveSkillCode = 4;
+}
+message ActiveSkillsLearnReply {
+  repeated ActiveSkillOperation ActiveSkillOperations = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+  repeated AchievementProgressOperation AchievementProgressOperations = 3;
+}
+message AdventureCampaign {
+  uint32 Code = 1;
+  Schedule RecentSchedule = 2;
+}
+message AdventureSortie {
+  uint32 StageCode = 1;
+  repeated MonsterEquipment Members = 2;
+}
+message Member {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 Position = 2;
+}
+message AdventureParty {
+  uint32 PartyId = 1;
+  repeated Member Members = 2;
+}
+message AdventurePartiesAllReply {
+  repeated AdventureParty Parties = 1;
+}
+message AdventurePartiesUpdateRequest {
+  repeated AdventureParty Parties = 1;
+}
+message AdventurePartiesUpdateReply {
+  bool Success = 1;
+}
+message AdventuresStartRequest {
+  uint32 StageCode = 1;
+  uint32 PartyId = 2;
+}
+message AdventuresStartReply {
+  bool NowOpen = 1;
+  StaminaOperation StaminaOperation = 2;
+  MonsterAssociations MonsterAssociations = 3;
+  Stage Stage = 4;
+  AdventureParty Party = 5;
+  repeated DefeatingEnemyReward DefeatingEnemyRewards = 6;
+  repeated Equipment Equipments = 7;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 8;
+  PlayCountRestrictionOperation AreaPlayCountRestrictionOperation = 14;
+  repeated AchievementProgressOperation AchievementProgressOperations = 15;
+  repeated DailyAreaPassOperation DailyAreaPassOperations = 16;
+}
+message AdventuresEndRequest {
+  uint32 StageCode = 1;
+  bool Win = 2;
+  uint32 TurnCount = 3;
+  repeated uint32 DefeatedEnemyCodes = 4;
+  repeated uint32 AcquiredTreasureChestCodes = 5;
+  repeated uint32 CompletedStageMissionCodes = 6;
+  DefeatReasonType Reason = 7;
+  bytes BattleRecord = 8;
+  repeated MasterRank MasterRanks = 9;
+}
+message AdventuresEndReply {
+  UserOperation UserOperation = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+  MonsterAssociationOperations MonsterAssociationOperations = 3;
+  repeated StageOperation StageOperations = 4;
+  repeated StageMissionCompletion NewStageMissionCompletions = 5;
+  repeated EquipmentOperation EquipmentOperations = 6;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 7;
+  int32 IndicationMonsterExp = 8;
+  repeated uint32 AcquiredTreasureChestCodes = 9;
+  repeated AchievementProgressOperation AchievementProgressOperations = 10;
+  repeated PointCardOperation PointCardOperations = 11;
+  repeated uint32 ClampedConsumableItemCodes = 12;
+  repeated ProfileIconOperation ProfileIconOperations = 13;
+  repeated PresentItemOperation PresentItemOperations = 20;
+}
+message AdventuresContinueReply {
+  ConsumableItemOperation ConsumableItemOperation = 1;
+  JewelOperation JewelOperation = 2;
+  uint32 ContinueCount = 3;
+}
+message AdventuresCurrentContinueCountReply {
+  uint32 ContinueCount = 1;
+}
+message AdventuresRestoreReply {
+  bool RestoreSucceeded = 1;
+  MonsterAssociations MonsterAssociations = 2;
+  Stage Stage = 3;
+  AdventureParty Party = 4;
+  repeated DefeatingEnemyReward DefeatingEnemyRewards = 5;
+  repeated Equipment Equipments = 6;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 7;
+  uint32 ContinueCount = 8;
+}
+message AdventuresSkipRequest {
+  uint32 StageCode = 1;
+  uint32 PartyId = 2;
+  uint32 Times = 3;
+}
+message AdventuresSkipReply {
+  bool NowOpen = 1;
+  StaminaOperation StaminaOperation = 2;
+  repeated DailyAreaPassOperation DailyAreaPassOperations = 3;
+  UserOperation UserOperation = 4;
+  repeated ConsumableItemOperation ConsumableItemOperations = 5;
+  MonsterAssociationOperations MonsterAssociationOperations = 6;
+  repeated StageOperation StageOperations = 7;
+  repeated EquipmentOperation EquipmentOperations = 8;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 9;
+  int32 IndicationMonsterExp = 10;
+  repeated AchievementProgressOperation AchievementProgressOperations = 11;
+  repeated PointCardOperation PointCardOperations = 12;
+  repeated uint32 ClampedConsumableItemCodes = 13;
+  repeated PresentItemOperation PresentItemOperations = 14;
+  PlayCountRestrictionOperation AreaPlayCountRestrictionOperation = 15;
+  repeated uint32 DefeatedEnemyCodes = 16;
+}
+message SortiesReply {
+  repeated AdventureSortie Sorties = 1;
+}
+message ResetSortieRequest {
+  uint32 StageCode = 1;
+}
+message ResetSortieReply {
+  repeated uint32 ClosedStageCodes = 1;
+}
+message AdventuresCampaignsReply {
+  repeated AdventureCampaign Campaigns = 1;
+}
+message ApiTimeSyncRequest {
+}
+message ApiTimeSyncReply {
+  Timestamp Current = 1;
+  Timestamp DailyResetAt = 2;
+  Timestamp WeeklyResetAt = 3;
+}
+enum PlayCountRestrictionType {
+  None = 0;
+  DailyReset = 1;
+  WeeklyReset = 2;
+}
+message PlayCountRestriction {
+  PlayCountRestrictionType Type = 1;
+  Timestamp ResetAt = 2;
+  uint32 PlayedCount = 3;
+  uint32 PlayCountLimit = 4;
+  uint32 AreaCode = 5;
+}
+message PlayCountRestrictionOperation {
+  OperationType Type = 1;
+  PlayCountRestriction Current = 2;
+  repeated PlayCountRestrictionChange Changes = 3;
+}
+message PlayCountRestrictionChange {
+  uint32 Id = 1;
+  int32 PlayedCount = 2;
+}
+message Area {
+  uint32 Code = 1;
+  Schedule RecentSchedule = 2;
+  PlayCountRestriction PlayCountRestriction = 3;
+  UrlItem UrlItem = 4;
+}
+message AreasAllReply {
+  repeated Area Areas = 1;
+}
+message ArenaCompetitionSeasonId {
+  uint32 MasterArenaCompetitionCode = 1;
+  uint32 SeasonNumber = 2;
+}
+message ArenaCompetition {
+  uint32 MasterArenaCompetitionCode = 1;
+  uint32 SeasonNumber = 2;
+  uint32 MasterArenaGradeCode = 3;
+  uint32 Point = 4;
+}
+message ArenaPointBreakdown {
+  int32 Basic = 1;
+  int32 TurnCountBonus = 2;
+  int32 SurvivedAllyMonsterBonus = 3;
+}
+message ArenaCompetitionChange {
+  CodeChange MasterArenaGradeCode = 1;
+  int32 Point = 2;
+}
+message ArenaCompetitionOperation {
+  OperationType Type = 1;
+  ArenaCompetition Current = 2;
+  repeated ArenaCompetitionChange Changes = 3;
+}
+message ArenaChallengeRight {
+  int32 Value = 1;
+  Timestamp ResetAt = 2;
+}
+message ArenaChallengeRightOperation {
+  OperationType Type = 1;
+  ArenaChallengeRight Current = 2;
+  repeated ArenaChallengeRightChange Changes = 3;
+}
+message ArenaChallengeRightChange {
+  int32 Value = 1;
+}
+message CompetitionSummary {
+  uint32 Code = 1;
+  uint32 SeasonNumber = 2;
+  bool Playable = 3;
+  Schedule SeasonSchedule = 4;
+  bool Entered = 5;
+  UrlItem UrlItem = 6;
+}
+message ArenaParty {
+  uint32 MasterArenaCompetitionCode = 1;
+  repeated Member Members = 2;
+  uint32 PartyId = 3;
+}
+message ArenaPlayerProfile {
+  UserProfile UserProfile = 1;
+  uint32 MasterArenaGradeCode = 2;
+  uint32 TotalPower = 3;
+  uint32 TotalPoint = 4;
+  bool IsNpc = 5;
+}
+message PartyMember {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 Order = 2;
+  uint32 Level = 3;
+  uint32 RankNumber = 4;
+  uint32 AwakeningPoint = 5;
+  uint32 PowerLevel = 6;
+}
+message OpponentSummary {
+  ArenaPlayerProfile ArenaProfile = 1;
+  uint32 RewardPoint = 2;
+  repeated PartyMember PartyMembers = 3;
+  uint32 MasterArenaStageCode = 4;
+}
+message OpponentSummaryGroup {
+  repeated OpponentSummary Opponents = 1;
+}
+message ArenaOpponentDetail {
+  ArenaPlayerProfile ArenaProfile = 1;
+  uint32 RewardPoint = 2;
+  MonsterAssociations MonsterAssociations = 3;
+  repeated ArenaPartyMember PartyMembers = 4;
+  repeated Equipment Equipments = 5;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 6;
+  repeated MasterRank MasterRanks = 7;
+  uint32 MasterArenaStageCode = 8;
+}
+message Position {
+  uint32 X = 1;
+  uint32 Y = 2;
+  uint32 Direction = 3;
+}
+message ArenaPartyMember {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 Order = 2;
+  uint32 MasterOperationCode = 3;
+  Position Position = 4;
+  uint32 PowerLevel = 5;
+}
+message ArenaBattleResult {
+  bool Win = 1;
+  DefeatReasonType Reason = 2;
+  uint32 TurnCount = 3;
+  repeated uint32 SurvivedAllyMonsterCodes = 4;
+  repeated uint32 SurvivedEnemyMonsterCodes = 5;
+}
+enum FailedReasonType {
+  Unset = 0;
+  NotInTime = 1;
+  PossessionLimit = 2;
+}
+message ArenaReceiveRankingRewardResult {
+  ArenaCompetitionSeasonId ArenaCompetitionSeasonId = 1;
+  RankingStatus Status = 3;
+  uint32 Rank = 4;
+  uint32 Score = 5;
+  uint32 MasterArenaGradeCode = 6;
+  FailedReasonType FailedReason = 7;
+}
+message ArenaBattleLogPage {
+  int32 PageNumber = 1;
+}
+message ArenasBattleLog {
+  UserProfile Profile = 1;
+  bool IsNpc = 2;
+  bool Win = 3;
+}
+message ArenasTopReply {
+  repeated CompetitionSummary Competitions = 1;
+  repeated ArenaCompetitionSeasonId RewardReceivableSeasons = 2;
+}
+message ArenasCompetitionRequest {
+  uint32 Code = 1;
+  uint32 SeasonNumber = 2;
+}
+message ArenasCompetitionReply {
+  bool NowOpen = 1;
+  uint32 MasterArenaGradeCode = 2;
+  uint32 Point = 3;
+  ArenaChallengeRight ChallengeRight = 4;
+  uint32 Rank = 5;
+  uint32 Score = 6;
+  RankingStatus Status = 7;
+}
+message ArenasPartyRequest {
+  uint32 MasterArenaCompetitionCode = 1;
+}
+message ArenasPartyReply {
+  repeated ArenaParty Parties = 1;
+}
+message ArenasUpdatePartyRequest {
+  repeated ArenaParty Parties = 1;
+}
+message ArenasUpdatePartyReply {
+  bool Success = 1;
+}
+message ArenasLotOpponentsRequest {
+  uint32 MasterArenaCompetitionCode = 1;
+  uint32 SeasonNumber = 2;
+  bool Shuffle = 3;
+}
+message ArenasLotOpponentsReply {
+  repeated OpponentSummaryGroup OpponentGroups = 3;
+}
+message ArenasStartRequest {
+  uint32 MasterArenaCompetitionCode = 1;
+  uint32 SeasonNumber = 2;
+  string FriendId = 3;
+  uint32 PartyId = 4;
+}
+message ArenasStartReply {
+  bool NowOpen = 1;
+  ArenaOpponentDetail OpponentDetail = 2;
+  repeated AchievementProgressOperation AchievementProgressOperations = 3;
+  ArenaChallengeRightOperation ChallengeRightOperation = 4;
+}
+message ArenasPlanTacticsRequest {
+  repeated ArenaPartyMember PartyMembers = 1;
+  repeated MasterRank MasterRanks = 3;
+}
+message ArenasPlanTacticsReply {
+  bool Success = 1;
+}
+message ArenasEndRequest {
+  ArenaBattleResult BattleResult = 1;
+  bytes BattleRecord = 2;
+}
+message ArenasEndReply {
+  bool NowOpen = 1;
+  ArenaPointBreakdown PointBreakdown = 2;
+  ArenaCompetitionOperation CompetitionOperation = 3;
+  repeated ConsumableItemOperation ConsumableItemOperations = 4;
+  repeated AchievementProgressOperation AchievementProgressOperations = 5;
+  repeated PointCardOperation PointCardOperations = 6;
+  repeated uint32 ClampedConsumableItemCodes = 7;
+  repeated PresentItemOperation PresentItemOperations = 8;
+  uint32 Rank = 9;
+  uint32 Score = 10;
+  RankingStatus Status = 11;
+  uint32 MasterArenaCompetitionCode = 12;
+  uint32 SeasonNumber = 13;
+}
+message ArenasRankingRequest {
+  uint32 MasterArenaCompetitionCode = 1;
+  uint32 SeasonNumber = 2;
+  uint32 Rank = 3;
+  string FriendId = 4;
+  uint32 Limit = 5;
+}
+message ArenasRankingReply {
+  repeated Ranking Rankings = 1;
+  RankingStatus Status = 2;
+  Schedule SeasonSchedule = 3;
+  repeated Border Borders = 4;
+}
+message ArenasProfileRequest {
+  string FriendId = 1;
+  uint32 MasterArenaCompetitionCode = 2;
+  uint32 SeasonNumber = 3;
+}
+message ArenasProfileReply {
+  string UserKey = 1;
+  MonsterAssociations MonsterAssociations = 2;
+  repeated ArenaPartyMember PartyMembers = 3;
+  repeated Equipment Equipments = 4;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 5;
+  repeated MasterRank MasterRanks = 6;
+}
+message ArenasReceiveRewardRequest {
+  ArenaCompetitionSeasonId Season = 1;
+}
+message ArenasReceiveRewardReply {
+  ArenaReceiveRankingRewardResult Result = 1;
+  UserOperation UserOperation = 2;
+  repeated ConsumableItemOperation ConsumableItemOperations = 3;
+  MonsterAssociationOperations MonsterAssociationOperations = 4;
+  repeated EquipmentOperation EquipmentOperations = 5;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 6;
+  repeated AchievementProgressOperation AchievementProgressOperations = 7;
+  repeated ProfileIconOperation ProfileIconOperations = 8;
+  repeated PresentItemOperation PresentItemOperations = 9;
+  repeated uint32 WillBeClampedConsumableItemCodes = 10;
+}
+message ArenasRestoreReply {
+  bool RestoreSucceeded = 1;
+  ArenaOpponentDetail OpponentDetail = 2;
+  uint32 MasterArenaCompetitionCode = 3;
+  ArenaParty Party = 4;
+}
+message ArenasBattleLogsRequest {
+  uint32 MasterArenaCompetitionCode = 1;
+  uint32 SeasonNumber = 2;
+  int32 PageSize = 3;
+  ArenaBattleLogPage PageToken = 4;
+}
+message ArenasBattleLogsReply {
+  repeated ArenasBattleLog Logs = 1;
+  int32 WonCount = 2;
+  int32 DefeatCount = 3;
+  int32 PageSize = 4;
+  int32 TotalSize = 5;
+  ArenaBattleLogPage CurrentPageToken = 6;
+  ArenaBattleLogPage FirstPageToken = 7;
+  ArenaBattleLogPage PreviousPageToken = 8;
+  ArenaBattleLogPage NextPageToken = 9;
+  ArenaBattleLogPage LastPageToken = 10;
+}
+message AuthsPrepareSessionRequest {
+}
+message AuthsPrepareSessionReply {
+  string OnetimeToken = 1;
+  bool NeedsPlatformAcknowledgement = 2;
+}
+message AuthsSignupRequest {
+  string SessionId = 1;
+  int32 DeviceType = 2;
+  bool HasDeviceToken = 3;
+  string DeviceToken = 4;
+  bool AdvertisingTrackingEnabled = 5;
+  string AdvertisingId = 6;
+  string TerminalId = 7;
+  string Platform = 8;
+  string Store = 9;
+  string DeviceModel = 10;
+  string OperatingSystem = 11;
+}
+message AuthsLoginRequest {
+  string SessionId = 1;
+  int32 DeviceType = 2;
+  bool HasDeviceToken = 3;
+  string DeviceToken = 4;
+  bool AdvertisingTrackingEnabled = 5;
+  string AdvertisingId = 6;
+  string Platform = 7;
+  string Store = 8;
+  string DeviceModel = 9;
+  string OperatingSystem = 10;
+}
+message AuthsLoginReply {
+  string AccessToken = 1;
+}
+message AuthsVerifyRequest {
+  string SessionId = 1;
+}
+message AuthsVerifyReply {
+  bool Valid = 1;
+}
+message BattleRoadParty {
+  uint32 MasterAreaCode = 1;
+  repeated Member Members = 2;
+}
+message BattleRoadsPartiesRequest {
+  repeated uint32 MasterAreaCodes = 1;
+}
+message BattleRoadsPartiesReply {
+  repeated BattleRoadParty Parties = 1;
+}
+message BattleRoadsUpdatePartyRequest {
+  BattleRoadParty Party = 1;
+}
+message BattleRoadsUpdatePartyReply {
+  bool Success = 1;
+}
+message BattleRoadsStartRequest {
+  uint32 StageCode = 1;
+}
+message BattleRoadsStartReply {
+  bool NowOpen = 1;
+  StaminaOperation StaminaOperation = 2;
+  Stage Stage = 3;
+  BattleRoadParty Party = 4;
+  repeated DefeatingEnemyReward DefeatingEnemyRewards = 5;
+  MonsterAssociations MonsterAssociations = 6;
+  repeated Equipment Equipments = 7;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 8;
+  PlayCountRestrictionOperation AreaPlayCountRestrictionOperation = 14;
+  repeated AchievementProgressOperation AchievementProgressOperations = 15;
+}
+message BattleRoadsEndRequest {
+  uint32 StageCode = 1;
+  bool Win = 2;
+  uint32 TurnCount = 3;
+  repeated uint32 DefeatedLeaderEnemyCodes = 4;
+  repeated uint32 DefeatedMemberEnemyCodes = 5;
+  repeated uint32 AcquiredTreasureChestCodes = 6;
+  repeated uint32 CompletedStageMissionCodes = 7;
+  DefeatReasonType Reason = 8;
+  bytes BattleRecord = 9;
+  repeated MasterRank MasterRanks = 10;
+}
+message BattleRoadsEndReply {
+  UserOperation UserOperation = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+  MonsterAssociationOperations MonsterAssociationOperations = 3;
+  repeated StageOperation StageOperations = 4;
+  repeated StageMissionCompletion NewStageMissionCompletions = 5;
+  repeated EquipmentOperation EquipmentOperations = 6;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 7;
+  int32 IndicationMonsterExp = 8;
+  repeated uint32 AcquiredTreasureChestCodes = 9;
+  repeated AchievementProgressOperation AchievementProgressOperations = 10;
+  repeated PointCardOperation PointCardOperations = 11;
+  repeated uint32 ClampedConsumableItemCodes = 12;
+  repeated ProfileIconOperation ProfileIconOperations = 13;
+  repeated PresentItemOperation PresentItemOperations = 20;
+}
+message BattleRoadsContinueReply {
+  ConsumableItemOperation ConsumableItemOperation = 1;
+  JewelOperation JewelOperation = 2;
+  uint32 ContinueCount = 3;
+}
+message BattleRoadsCurrentContinueCountReply {
+  uint32 ContinueCount = 1;
+}
+message BattleRoadsRestoreReply {
+  bool RestoreSucceeded = 1;
+  Stage Stage = 2;
+  BattleRoadParty Party = 3;
+  repeated DefeatingEnemyReward DefeatingEnemyRewards = 4;
+  MonsterAssociations MonsterAssociations = 5;
+  repeated Equipment Equipments = 6;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 7;
+  uint32 ContinueCount = 8;
+}
+message BattleRoadsSkipRequest {
+  uint32 StageCode = 1;
+  uint32 Times = 2;
+}
+message BattleRoadsSkipReply {
+  bool NowOpen = 1;
+  StaminaOperation StaminaOperation = 2;
+  UserOperation UserOperation = 3;
+  repeated ConsumableItemOperation ConsumableItemOperations = 4;
+  MonsterAssociationOperations MonsterAssociationOperations = 5;
+  repeated StageOperation StageOperations = 6;
+  repeated EquipmentOperation EquipmentOperations = 7;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 8;
+  int32 IndicationMonsterExp = 9;
+  repeated AchievementProgressOperation AchievementProgressOperations = 10;
+  repeated PointCardOperation PointCardOperations = 11;
+  repeated uint32 ClampedConsumableItemCodes = 12;
+  repeated PresentItemOperation PresentItemOperations = 13;
+  PlayCountRestrictionOperation AreaPlayCountRestrictionOperation = 14;
+  repeated uint32 DefeatedEnemyCodes = 15;
+}
+message DailyAreaPass {
+  uint32 MasterAreaCode = 1;
+  uint32 UsedCount = 2;
+  Timestamp LastUsedAt = 3;
+}
+message Boost {
+  uint32 MasterBoostCode = 1;
+  repeated DailyAreaPass DailyAreaPasses = 2;
+}
+message DailyAreaPassOperation {
+  OperationType Type = 1;
+  DailyAreaPass Current = 2;
+  repeated DailyAreaPassChange Changes = 3;
+}
+message DailyAreaPassChange {
+  uint32 Id = 1;
+  int32 UsedCount = 2;
+}
+message ClientsStatusListReply {
+  repeated uint32 DisabledUis = 1;
+}
+message ConsumableItem {
+  uint32 MasterConsumableItemCode = 1;
+  uint32 Quantity = 2;
+  Timestamp LastGainedAt = 3;
+}
+message ConsumableItemOperation {
+  OperationType Type = 1;
+  ConsumableItem Current = 2;
+  repeated ConsumableItemChange Changes = 3;
+}
+message ConsumableItemChange {
+  uint32 Id = 1;
+  int32 Quantity = 2;
+  int32 ReasonType = 3;
+  uint32 ReasonCode = 4;
+}
+message ConsumableItemsAllRequest {
+  repeated uint32 MasterConsumableItemCodes = 1;
+}
+message ConsumableItemsAllReply {
+  repeated ConsumableItem ConsumableItems = 1;
+}
+message EntrypointsCurrentRequest {
+  int32 DeviceType = 1;
+  string ClientVersion = 2;
+}
+message Entrypoint {
+  string ApiUrl = 1;
+  string AssetUrl = 2;
+  string LoginUrl = 3;
+}
+message SqexEntrypoint {
+  string BridgeUrl = 1;
+  uint32 GameId = 2;
+}
+message MaintenancePlan {
+  string Message = 1;
+  string AnnounceUrl = 2;
+}
+message Review {
+  Timestamp UpdatedAt = 1;
+  bool Enable = 2;
+}
+message TermOfService {
+  Timestamp UpdatedAt = 1;
+  string Url = 2;
+}
+message PrivacyPolicy {
+  Timestamp UpdatedAt = 1;
+  string Url = 2;
+}
+message WebUrls {
+  string PolicyUrl = 1;
+  string HelpUrl = 2;
+  string CopyrightUrl = 3;
+  string TermOfPaymentUrl = 4;
+  string TermOfCommercialUrl = 5;
+  string ScoutStampUrl = 6;
+}
+message TrackingPolicy {
+  Timestamp UpdatedAt = 1;
+  string Url = 2;
+}
+message EntrypointsCurrentReply {
+  Entrypoint Entrypoint = 1;
+  Status Status = 2;
+  SqexEntrypoint SqexEntrypoint = 3;
+  MaintenancePlan MaintenancePlan = 4;
+  Review Review = 5;
+  TermOfService TermOfService = 6;
+  PrivacyPolicy PrivacyPolicy = 7;
+  WebUrls WebUrls = 8;
+  TrackingPolicy TrackingPolicy = 9;
+}
+message Equipment {
+  uint32 MasterEquipmentCode = 1;
+  uint32 MaterialQuantity = 2;
+  bool Locked = 3;
+  Timestamp CreatedAt = 15;
+}
+message EquipmentOperation {
+  OperationType Type = 1;
+  Equipment Current = 2;
+  repeated EquipmentChange Changes = 3;
+}
+message EquipmentChange {
+  uint32 Id = 1;
+  int32 MaterialQuantity = 2;
+  int32 ReasonType = 10;
+  uint32 ReasonCode = 11;
+}
+message EquipmentAlchemyPassiveSkill {
+  uint32 MasterEquipmentCode = 1;
+  int32 SlotNumber = 2;
+  uint32 MasterPassiveSkillCode = 3;
+}
+message EquipmentAlchemyPassiveSkillOperation {
+  OperationType Type = 1;
+  EquipmentAlchemyPassiveSkill Current = 2;
+  repeated EquipmentAlchemyPassiveSkillChange Changes = 3;
+}
+message EquipmentAlchemyPassiveSkillChange {
+  uint32 Id = 1;
+}
+message CandidateEquipmentAlchemyPassiveSkill {
+  uint32 MasterEquipmentCode = 1;
+  int32 CandidateId = 2;
+  int32 SlotNumber = 3;
+  uint32 MasterPassiveSkillCode = 4;
+}
+message CandidateEquipmentAlchemyPassiveSkillOperation {
+  OperationType Type = 1;
+  CandidateEquipmentAlchemyPassiveSkill Current = 2;
+  repeated CandidateEquipmentAlchemyPassiveSkillChange Changes = 3;
+}
+message CandidateEquipmentAlchemyPassiveSkillChange {
+  uint32 Id = 1;
+}
+message EquipmentsAllRequest {
+  repeated uint32 MasterEquipmentCodes = 1;
+}
+message EquipmentsAllReply {
+  repeated Equipment Equipments = 1;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 2;
+  repeated CandidateEquipmentAlchemyPassiveSkill CandidateEquipmentAlchemyPassiveSkills = 3;
+}
+message EquipmentsAlchemizeRequest {
+  uint32 MasterEquipmentCode = 1;
+  uint32 Times = 2;
+  bool UseEquipmentMaterial = 3;
+  uint32 MasterConsumableItemCode = 4;
+}
+message EquipmentsAlchemizeReply {
+  EquipmentOperation EquipmentOperation = 2;
+  repeated CandidateEquipmentAlchemyPassiveSkill CandidateEquipmentAlchemyPassiveSkills = 3;
+  repeated AchievementProgressOperation AchievementProgressOperations = 4;
+  repeated PointCardOperation PointCardOperations = 5;
+  repeated ConsumableItemOperation ConsumableItemOperations = 6;
+}
+message EquipmentsFinishAlchemizeRequest {
+  uint32 MasterEquipmentCode = 1;
+  bool Overwritten = 2;
+  int32 CandidateId = 3;
+}
+message EquipmentsFinishAlchemizeReply {
+  EquipmentOperation EquipmentOperation = 1;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 2;
+  repeated CandidateEquipmentAlchemyPassiveSkillOperation CandidateEquipmentAlchemyPassiveSkillOperations = 3;
+}
+message EquipmentsLockRequest {
+  uint32 MasterEquipmentCode = 1;
+  bool Locked = 2;
+}
+message EquipmentsLockReply {
+  EquipmentOperation EquipmentOperation = 1;
+}
+message EventPortalListItem {
+  uint32 MasterEventPortalCode = 1;
+  uint32 NewsId = 2;
+}
+message EventPortalsListReply {
+  repeated EventPortalListItem Items = 1;
+}
+message ExchangeShop {
+  uint32 Code = 1;
+  repeated ExchangeShopGoods Goods = 2;
+  Schedule RecentSchedule = 3;
+  UrlItem UrlItem = 4;
+}
+message ExchangeShopGoods {
+  uint32 Code = 1;
+  uint32 PurchasableCountLeft = 2;
+  Timestamp ResetAt = 3;
+  Schedule Schedule = 4;
+}
+message ExchangeShopsListRequest {
+  repeated uint32 MasterExchangeShopCodes = 1;
+}
+message ExchangeShopsListReply {
+  repeated ExchangeShop Shops = 1;
+}
+message ExchangeShopsBuyRequest {
+  uint32 MasterExchangeGoodsCode = 1;
+  uint32 Quantity = 2;
+}
+message ExchangeShopsBuyReply {
+  bool NowOpen = 1;
+  ExchangeShopGoods Goods = 2;
+  UserOperation UserOperation = 3;
+  repeated ConsumableItemOperation ConsumableItemOperations = 4;
+  MonsterAssociationOperations MonsterAssociationOperations = 5;
+  repeated EquipmentOperation EquipmentOperations = 6;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 7;
+  JewelOperation JewelOperation = 8;
+  repeated AchievementProgressOperation AchievementProgressOperations = 10;
+  repeated PointCardOperation PointCardOperations = 11;
+  repeated ProfileIconOperation ProfileIconOperations = 12;
+}
+message FeatureGuidance {
+  uint32 MasterFeatureGuidanceCode = 1;
+}
+message FeatureGuidancesAlreadyReadListReply {
+  repeated FeatureGuidance FeatureGuidances = 1;
+}
+message FeatureGuidancesReadRequest {
+  uint32 MasterFeatureGuidanceCode = 1;
+}
+message PersonalizedSchedule {
+  uint32 ConditionCode = 1;
+  Schedule Schedule = 2;
+}
+message GachaGroup {
+  uint32 Code = 1;
+  int32 Category = 2;
+  int32 OrderNumber = 3;
+  repeated string BannerPaths = 4;
+  bool IsScheduleVisible = 5;
+  Schedule Schedule = 6;
+  repeated GachaProduct Products = 7;
+  PersonalizedSchedule PersonalizedSchedule = 8;
+  GachaStampConfig GachaStampConfig = 10;
+  UrlItem UrlItem = 11;
+}
+message LotCountRestriction {
+  int32 ResetType = 1;
+  Timestamp ResetAt = 2;
+  uint32 LottedCount = 3;
+  uint32 LotCountLimit = 4;
+}
+message GachaProduct {
+  uint32 Code = 1;
+  int32 ConsumptionType = 3;
+  uint32 ConsumptionCode = 4;
+  uint32 ConsumptionQuantity = 5;
+  repeated GachaProductLotteryConfig GachaProductLotteryConfigs = 6;
+  LotCountRestriction LotCountRestriction = 7;
+  repeated GachaStampProductLotteryConfigs GachaStampProductLotteryConfigs = 8;
+  bool Stampable = 9;
+  bool Retryable = 10;
+}
+message GachaStampProductLotteryConfigs {
+  int32 GachaStampGuaranteedType = 1;
+  repeated GachaProductLotteryConfig GachaProductLotteryConfigs = 2;
+}
+message GachaProductLotteryConfig {
+  uint32 GachaLotteryConfigCode = 1;
+  int32 Times = 2;
+}
+message GachaLotteryConfig {
+  uint32 Code = 1;
+  int32 LotteryType = 2;
+  string Name = 3;
+  RandomGachaDetail RandomGachaDetail = 4;
+  BoxGachaDetail BoxGachaDetail = 5;
+}
+message RandomGachaDetail {
+  repeated GachaItemRate Rates = 1;
+}
+message BoxGachaDetail {
+  repeated GachaItemRemain Remains = 1;
+}
+message GachaItemRate {
+  GachaItem Item = 1;
+  double Rate = 2;
+  bool Pickup = 3;
+}
+message GachaItemRemain {
+  GachaItem Item = 1;
+  uint32 Remain = 2;
+  uint32 Maximum = 3;
+}
+message GachaResult {
+  uint32 ConfigCode = 1;
+  GachaItem Item = 2;
+}
+message GachaItem {
+  int32 MasterType = 1;
+  uint32 MasterCode = 2;
+  uint32 Quantity = 3;
+}
+message GachaStampProgress {
+  uint32 ProgressControlId = 1;
+  int32 CurrentValue = 2;
+}
+message GachaStampConfig {
+  uint32 MasterGachaStampCode = 1;
+  uint32 ProgressControlId = 2;
+}
+message GachaStampProgressOperation {
+  OperationType Type = 1;
+  GachaStampProgress Current = 2;
+  repeated GachaStampProgressChange Changes = 3;
+}
+message GachaStampProgressChange {
+  uint32 Id = 1;
+  int32 CurrentValue = 2;
+}
+message GachaGroupName {
+  uint32 Code = 1;
+  string Name = 2;
+}
+message GachasListRequest {
+}
+message GachasListReply {
+  repeated GachaGroup Groups = 1;
+  repeated GachaStampProgress Progresses = 2;
+  repeated GachaLotteryConfig GachaLotteryConfigs = 3;
+}
+message GachasLotRequest {
+  uint32 ProductCode = 1;
+  int32 ConsumptionType = 2;
+}
+message GachasLotReply {
+  uint32 ProductCode = 1;
+  repeated GachaResult Results = 2;
+  MonsterAssociationOperations MonsterAssociationOperations = 3;
+  repeated ConsumableItemOperation ConsumableItemOperations = 4;
+  JewelOperation JewelOperation = 5;
+  repeated EquipmentOperation EquipmentOperations = 6;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 7;
+  LotCountRestriction LotCountRestriction = 8;
+  bool NowOpen = 9;
+  repeated AchievementProgressOperation AchievementProgressOperations = 10;
+  repeated PointCardOperation PointCardOperations = 11;
+  repeated PresentItemOperation PresentItemOperations = 12;
+  GachaStampProgressOperation GachaStampProgressOperation = 13;
+}
+message GachasLotRetryableGachaRequest {
+  uint32 ProductCode = 1;
+}
+message GachasLotRetryableGachaReply {
+  uint32 ProductCode = 1;
+  uint32 LotteryNumber = 2;
+  repeated GachaResult Results = 3;
+  bool NowOpen = 4;
+}
+message GachasFinishLotRetryableGachaRequest {
+  uint32 ProductCode = 1;
+  int32 ConsumptionType = 2;
+  uint32 LotteryNumber = 3;
+}
+message GachasTriggerRequest {
+  uint32 ReleaseConditionCode = 1;
+}
+message GachasTriggerReply {
+  uint32 ReleaseConditionCode = 1;
+  bool NowFulfilled = 2;
+  repeated GachaGroup ReleasedGachaGroups = 3;
+}
+message GachasGroupNameListRequest {
+}
+message GachasGroupNameListReply {
+  repeated GachaGroupName GroupNames = 1;
+}
+message IAPsInitReply {
+  repeated string ConsumableProductIds = 1;
+  repeated string SubscriptionProductIds = 2;
+}
+message JewelProductListItem {
+  string ProductId = 1;
+  uint32 Price = 2;
+  uint32 AmountPaid = 3;
+  uint32 AmountFree = 4;
+  string CampaignDescription = 5;
+  uint32 Order = 6;
+  string DisplayName = 7;
+}
+message JewelPurchaseRestriction {
+  uint32 BirthYear = 1;
+  uint32 BirthMonth = 2;
+  uint32 CesaLimitAge = 3;
+  uint32 ChargedMoneyThisMonth = 4;
+}
+message Jewel {
+  uint32 PaidQuantity = 1;
+  uint32 FreeQuantity = 2;
+}
+message JewelOperation {
+  OperationType Type = 1;
+  Jewel Current = 2;
+  repeated JewelChange Changes = 3;
+}
+message JewelChange {
+  uint32 Id = 1;
+  int32 PaidQuantity = 2;
+  int32 FreeQuantity = 3;
+}
+message JewelPriceInformation {
+  double Price = 1;
+  string IsoCurrencyCode = 2;
+}
+message JewelsListProductReply {
+  JewelPurchaseRestriction PurchaseRestriction = 1;
+  repeated JewelProductListItem Items = 2;
+}
+message JewelsRegisterBirthdayRequest {
+  uint32 BirthYear = 1;
+  uint32 BirthMonth = 2;
+}
+message JewelsRegisterBirthdayReply {
+  JewelPurchaseRestriction PurchaseRestriction = 1;
+}
+message JewelsBeginPurchaseRequest {
+  string ProductId = 1;
+  int32 DeviceType = 2;
+  JewelPriceInformation JewelPriceInformation = 3;
+}
+message JewelsBeginPurchaseReply {
+  JewelPurchaseStatus Status = 1;
+}
+message JewelsCommitPurchaseRequest {
+  string ProductId = 1;
+  string Receipt = 2;
+  string ReceiptTransactionId = 3;
+  int32 DeviceType = 4;
+}
+message JewelsCommitPurchaseReply {
+  JewelPurchaseStatus Status = 1;
+  JewelOperation JewelOperation = 2;
+}
+message JewelsCurrentReply {
+  Jewel Jewel = 1;
+}
+message LoginBonus {
+  uint32 MasterLoginBonusCode = 1;
+  Schedule RecentSchedule = 2;
+  int32 ReceivedDayOffset = 4;
+  bool HasUnreceived = 5;
+}
+message LoginBonusReceipt {
+  uint32 MasterLoginBonusCode = 1;
+  int32 Day = 2;
+}
+message LoginBonusesAllReply {
+  repeated LoginBonus LoginBonuses = 1;
+}
+message LoginBonusesReceiveReply {
+  repeated LoginBonusReceipt Receipts = 1;
+  repeated MonsterOperation MonsterOperations = 2;
+  repeated ActiveSkillOperation ActiveSkillOperations = 3;
+  repeated EquipmentOperation EquipmentOperations = 4;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 5;
+  repeated ConsumableItemOperation ConsumableItemOperations = 6;
+  repeated PresentItemOperation PresentItemOperations = 7;
+  repeated AchievementProgressOperation AchievementProgressOperations = 8;
+  repeated PointCardOperation PointCardOperations = 9;
+  repeated ProfileIconOperation ProfileIconOperations = 10;
+}
+message LogsOutputRequest {
+  uint32 ApiLatency = 1;
+  uint32 CdnLatency = 2;
+}
+message LogsOutputReply {
+}
+message MasterRank {
+  int32 FamilyType = 1;
+  int32 Rank = 2;
+}
+message MonsterEquipping {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 MasterEquipmentCode = 2;
+  uint32 SlotNumber = 3;
+}
+message EquipmentSlot {
+  uint32 MasterEquipmentCode = 1;
+  uint32 SlotNumber = 2;
+}
+message MonsterEquipment {
+  uint32 MasterAllyMonsterCode = 1;
+  repeated EquipmentSlot EquipmentSlots = 2;
+}
+message Monster {
+  uint32 MasterAllyMonsterCode = 1;
+  string Nickname = 2;
+  uint32 Exp = 3;
+  uint32 Level = 4;
+  uint32 LevelCap = 5;
+  Timestamp CreatedAt = 6;
+  uint32 RankNumber = 7;
+  uint32 AwakeningPoint = 8;
+  uint32 PowerLevel = 9;
+}
+message MonsterAssociations {
+  repeated Monster Monsters = 1;
+  repeated ActiveSkill ActiveSkills = 2;
+  repeated MonsterEquipping Equippings = 3;
+}
+message MonsterOperation {
+  OperationType Type = 1;
+  Monster Current = 2;
+  repeated MonsterChange Changes = 3;
+}
+message MonsterChange {
+  uint32 Id = 1;
+  int32 Exp = 2;
+  int32 Level = 3;
+  int32 LevelCap = 4;
+  int32 AwakeningPoint = 5;
+  int32 RankNumber = 6;
+}
+message MonsterAssociationOperations {
+  repeated MonsterOperation MonsterOperations = 1;
+  repeated ActiveSkillOperation ActiveSkillOperations = 2;
+}
+message MonsterStatus {
+  uint32 MasterAllyMonsterCode = 1;
+  int32 MaximumHp = 2;
+  int32 CurrentHp = 3;
+  int32 MaximumMp = 4;
+  int32 CurrentMp = 5;
+  bool Recovered = 6;
+}
+message MonstersAllRequest {
+  repeated uint32 MasterAllyMonsterCodes = 1;
+}
+message MonstersEnhanceRequest {
+  uint32 MasterAllyMonsterCode = 1;
+  repeated ConsumableItem ConsumableItems = 2;
+}
+message MonstersEnhanceReply {
+  repeated ConsumableItemOperation ConsumableItemOperations = 1;
+  MonsterOperation MonsterOperation = 2;
+  repeated ActiveSkillOperation ActiveSkillOperations = 3;
+  repeated AchievementProgressOperation AchievementProgressOperations = 4;
+  repeated PointCardOperation PointCardOperations = 5;
+}
+message MonstersRankUpRequest {
+  uint32 MasterAllyMonsterCode = 1;
+}
+message MonstersRankUpReply {
+  MonsterOperation MonsterOperation = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+  repeated AchievementProgressOperation AchievementProgressOperations = 3;
+}
+message MonstersEquipRequest {
+  MonsterEquipment Equipment = 1;
+}
+message MonstersEquipReply {
+}
+message MonstersEquipAllRequest {
+  repeated MonsterEquipment Equipments = 1;
+}
+message MonstersEquipAllReply {
+}
+message Cost {
+  uint32 MasterConsumableItemCode = 1;
+  uint32 Quantity = 2;
+}
+message MonstersAwakenRequest {
+  uint32 MasterAllyMonsterCode = 1;
+  repeated Cost Costs = 2;
+}
+message MonstersAwakenReply {
+  MonsterAssociationOperations MonsterAssociationOperations = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+  repeated AchievementProgressOperation AchievementProgressOperations = 3;
+}
+message MonstersGiveNicknameRequest {
+  uint32 MasterAllyMonsterCode = 1;
+  string Nickname = 2;
+}
+message MycardsListProductReply {
+  repeated JewelProductListItem Items = 1;
+}
+message MycardsBeginPurchaseRequest {
+  string ProductId = 1;
+  int32 DeviceType = 2;
+}
+message MycardsBeginPurchaseReply {
+  JewelPurchaseStatus Status = 1;
+}
+message MycardsCommitPurchaseRequest {
+  string ProductId = 1;
+  string Receipt = 2;
+  string ReceiptTransactionId = 3;
+  int32 DeviceType = 4;
+}
+message MycardsCommitPurchaseReply {
+  JewelPurchaseStatus Status = 1;
+  JewelOperation JewelOperation = 2;
+}
+message NewsListItem {
+  uint32 Id = 1;
+  uint32 GameId = 2;
+  NewsCategory Category = 4;
+  string Title = 5;
+  string ImageUrl = 6;
+  Timestamp StartAt = 7;
+  Timestamp EndAt = 8;
+}
+message NewsIntroduction {
+  string ImageUrl = 2;
+  uint32 TransitionType = 3;
+  string Code = 6;
+  UrlItem UrlItem = 7;
+  uint32 OrderNumber = 8;
+}
+enum UrlCategory {
+  All = 0;
+  Area_UrlCategory = 1;
+}
+message Url {
+  uint32 Code = 1;
+  UrlCategory Category = 2;
+  UrlItem UrlItem = 3;
+}
+message UrlItem {
+  uint32 InformationId = 1;
+  string IngameBrowserUrl = 2;
+  string ExternalBrowserUrl = 3;
+}
+message NewsListRequest {
+  uint32 Limit = 1;
+  uint32 Offset = 2;
+  int32 DeviceType = 3;
+}
+message NewsDetailRequest {
+  uint32 Id = 1;
+}
+message NewsListReply {
+  repeated NewsListItem Items = 1;
+}
+message NewsDetailReply {
+  uint32 Id = 1;
+  uint32 GameId = 2;
+  NewsCategory Category = 4;
+  string Title = 5;
+  string Body = 6;
+  string ImageUrl = 7;
+  Timestamp StartAt = 8;
+  Timestamp EndAt = 9;
+}
+message NewsEmbeddedContentsRequest {
+}
+message NewsEmbeddedContentsReply {
+  repeated NewsIntroduction Items = 1;
+}
+message UrlListRequest {
+  UrlCategory Category = 1;
+}
+message UrlListReply {
+  repeated Url Urls = 1;
+}
+message EmptyChange {
+  uint32 Id = 1;
+}
+message CodeChange {
+  uint32 Before = 1;
+  uint32 After = 2;
+}
+message ProductPack {
+  uint32 MasterPointCardProductPackCode = 1;
+  bool FirstDiscount = 2;
+}
+message ReceivedPointDetail {
+  uint32 MasterPointCardCode = 1;
+  repeated ConditionPoint ConditionPoints = 2;
+}
+message ConditionPoint {
+  uint32 ConditionType = 1;
+  uint32 ReceivedPoint = 2;
+}
+message PointCard {
+  uint32 MasterPointCardCode = 1;
+  uint32 NumberOfCards = 2;
+  uint32 ReceivedPoint = 3;
+  uint32 UnreceivedPoint = 4;
+  uint32 PastUnreceivedPoint = 5;
+  Timestamp StartAt = 6;
+  Timestamp EndAt = 7;
+}
+message PointCardOperation {
+  OperationType Type = 1;
+  PointCard Current = 2;
+  repeated PointCardChange Changes = 3;
+}
+message PointCardChange {
+  uint32 Id = 1;
+  int32 NumberOfCards = 2;
+  int32 ReceivedPoint = 3;
+  int32 UnreceivedPoint = 4;
+  int32 PastUnreceivedPoint = 5;
+}
+message PointCardsCurrentReply {
+  repeated PointCard PointCards = 1;
+}
+message PointCardsReceivePointReply {
+  repeated PointCardOperation PointCardOperations = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+  repeated ReceivedPointDetail ReceivedPointDetails = 3;
+}
+message PointCardsPurchaseRequest {
+  uint32 MasterPointCardProductPackCode = 1;
+}
+message PointCardsPurchaseReply {
+  JewelOperation JewelOperation = 1;
+  repeated PointCardOperation PointCardOperations = 2;
+}
+message PointCardsProductPacksReply {
+  repeated ProductPack ProductPacks = 1;
+}
+message PostalPackage {
+  uint32 PostalPackageId = 1;
+  string Summary = 2;
+}
+message PostalPackagesAllReply {
+  repeated PostalPackage PostalPackages = 1;
+}
+message PostalPackagesReceiveRequest {
+  repeated uint32 PostalPackageIds = 1;
+}
+message PostalPackagesReceiveReply {
+  repeated PostalPackage PostalPackages = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+}
+message MonsterPowerLevel {
+  uint32 MasterAllyMonsterCode = 1;
+  uint32 PowerLevel = 2;
+}
+message PowerLevelsUpdateRequest {
+  repeated MonsterPowerLevel MonsterPowerLevels = 1;
+}
+message PowerLevelsUpdateReply {
+  bool Success = 1;
+  repeated AchievementProgressOperation AchievementProgressOperations = 2;
+}
+message Reason {
+  uint32 ReasonType = 1;
+  ActionLogReasonCode ReasonCode = 2;
+  string ExtraReason = 3;
+}
+message Log {
+  uint64 PresentId = 1;
+  int32 ChangedQuantity = 2;
+  Timestamp ReceivedAt = 3;
+  Reason ActionReason = 10;
+  uint32 MasterAllyMonsterCode = 20;
+  uint32 MasterConsumableItemCode = 21;
+  bool IsJewel = 22;
+  uint32 MasterEquipmentCode = 23;
+}
+message PresentItem {
+  uint64 Id = 1;
+  uint32 Quantity = 2;
+  bool Receivable = 3;
+  bool UnlimitedDuration = 4;
+  Timestamp ExpireAt = 5;
+  Reason ActionReason = 10;
+  uint32 MasterAllyMonsterCode = 20;
+  uint32 MasterConsumableItemCode = 21;
+  bool IsJewel = 22;
+  uint32 MasterEquipmentCode = 23;
+}
+message PresentItemOperation {
+  OperationType Type = 1;
+  PresentItem Current = 2;
+  repeated PresentItemChange Changes = 3;
+}
+message PresentItemChange {
+  uint32 Id = 1;
+}
+message PresentBoxItemsRequest {
+  int32 PageSize = 1;
+  PresentBoxPage PageToken = 2;
+}
+message PresentBoxItemsReply {
+  repeated PresentItem Items = 1;
+  int32 PageSize = 2;
+  int32 TotalSize = 3;
+  PresentBoxPage CurrentPageToken = 4;
+  PresentBoxPage FirstPageToken = 5;
+  PresentBoxPage PreviousPageToken = 6;
+  PresentBoxPage NextPageToken = 7;
+  PresentBoxPage LastPageToken = 8;
+}
+message PresentBoxReceiveRequest {
+  repeated uint64 PresentItemIds = 1;
+  int32 PageSize = 2;
+}
+message PresentBoxReceiveReply {
+  bool NowOpen = 1;
+  repeated uint64 PresentItemIds = 2;
+  PresentBoxItemsReply FirstPage = 3;
+  repeated ConsumableItemOperation ConsumableItemOperations = 4;
+  JewelOperation JewelOperation = 5;
+  MonsterAssociationOperations MonsterAssociationOperations = 6;
+  repeated PresentItemOperation PresentItemOperations = 7;
+  repeated AchievementProgressOperation AchievementProgressOperations = 8;
+  repeated PointCardOperation PointCardOperations = 9;
+  repeated EquipmentOperation EquipmentOperations = 10;
+  repeated EquipmentAlchemyPassiveSkillOperation EquipmentAlchemyPassiveSkillOperations = 11;
+}
+message PresentBoxPage {
+  int32 PageNumber = 1;
+}
+message PresentBoxLogsRequest {
+  int32 PageSize = 1;
+  PresentBoxPage PageToken = 2;
+}
+message PresentBoxLogsReply {
+  repeated Log Logs = 1;
+  int32 PageSize = 2;
+  int32 TotalSize = 3;
+  PresentBoxPage CurrentPageToken = 4;
+  PresentBoxPage FirstPageToken = 5;
+  PresentBoxPage PreviousPageToken = 6;
+  PresentBoxPage NextPageToken = 7;
+  PresentBoxPage LastPageToken = 8;
+}
+message ProfileIcon {
+  uint32 MasterProfileIconCode = 1;
+  Timestamp CreatedAt = 2;
+}
+message ProfileIconOperation {
+  OperationType Type = 1;
+  ProfileIcon Current = 2;
+}
+message ProfileIconsAllRequest {
+  repeated uint32 MasterProfileIconCodes = 1;
+}
+message ProfileIconsAllReply {
+  repeated ProfileIcon ProfileIcons = 1;
+}
+message Border {
+  uint32 Rank = 1;
+  uint32 Score = 2;
+}
+message Ranking {
+  uint32 Rank = 1;
+  uint32 Score = 2;
+  UserProfile Profile = 3;
+}
+message RankingsPowerLevelListRequest {
+  bool FamilySpecified = 1;
+  uint32 FamilyCode = 2;
+  uint32 AcquisitionNumber = 3;
+}
+message RankingsPowerLevelListReply {
+  repeated Ranking Top = 1;
+  repeated Ranking Current = 2;
+  RankingStatus TopStatus = 3;
+  RankingStatus CurrentStatus = 4;
+}
+message RankingsPowerLevelSpecifiedRankingListRequest {
+  bool FamilySpecified = 1;
+  uint32 FamilyCode = 2;
+  uint32 AcquisitionNumber = 3;
+  string SpecifiedFriendId = 4;
+  AcquisitionDirection Direction = 5;
+}
+message RankingsPowerLevelSpecifiedRankingListReply {
+  repeated Ranking Rankings = 1;
+  RankingStatus Status = 2;
+}
+message Rational {
+  int32 Numerator = 1;
+  int32 Denominator = 2;
+}
+message Schedule {
+  Timestamp StartAt = 1;
+  Timestamp EndAt = 2;
+}
+message Stage {
+  uint32 Code = 1;
+  uint32 PlayedCount = 2;
+  uint32 ClearedCount = 3;
+  repeated uint32 AcquiredTreasureChests = 4;
+  repeated uint32 DefeatedOneTimeEnemies = 5;
+}
+message StageOperation {
+  OperationType Type = 1;
+  Stage Current = 2;
+  repeated StageChange Changes = 3;
+}
+message StageChange {
+  uint32 Id = 1;
+  uint32 PlayedCount = 2;
+  uint32 ClearedCount = 3;
+}
+message DefeatingEnemyReward {
+  uint32 EnemyCode = 1;
+  repeated uint64 LootGroupCodes = 2;
+}
+message StageMissionCompletion {
+  uint32 MasterStageCode = 1;
+  uint32 MasterStageMissionCode = 2;
+}
+message StageMissionCompletionsAllReply {
+  repeated StageMissionCompletion StageMissionCompletions = 1;
+}
+message StagesAllReply {
+  repeated Stage Stages = 1;
+}
+message Stamina {
+  int32 Value = 1;
+  int32 Cap = 2;
+  int32 OvershootCap = 3;
+  Timestamp RegenerateAt = 4;
+  int32 RegenerationInterval = 5;
+}
+message StaminaOperation {
+  OperationType Type = 1;
+  Stamina Current = 2;
+  repeated StaminaChange Changes = 3;
+}
+message StaminaChange {
+  uint32 Id = 1;
+  int32 Value = 2;
+  int32 Cap = 3;
+}
+message StaminasCurrentRequest {
+}
+message StaminasCurrentReply {
+  Stamina Stamina = 1;
+  uint32 JewelChargedCount = 2;
+  Timestamp ResetAt = 3;
+}
+message StaminasChargeRequest {
+  uint32 ConsumptionType = 1;
+  uint32 ConsumptionCode = 2;
+  uint32 UseCount = 3;
+}
+message StaminasChargeReply {
+  StaminaOperation StaminaOperation = 1;
+  ConsumableItemOperation ConsumableItemOperation = 2;
+  JewelOperation JewelOperation = 3;
+  uint32 JewelChargedCount = 4;
+  Timestamp ResetAt = 5;
+}
+message SubscriptionPurchase {
+}
+message SubscriptionContract {
+}
+message SubscriptionProductItem {
+  string ProductId = 1;
+  string PlanName = 2;
+  uint32 Price = 3;
+}
+message SubscriptionContractInfo {
+  Status Status = 1;
+  SubscriptionProductItem Product = 2;
+  Boost Boost = 3;
+  Timestamp ActivatedAt = 4;
+  Timestamp ExpireAt = 5;
+}
+message SubscriptionRestore {
+}
+message SubscriptionsProductRequest {
+  int32 DeviceType = 1;
+  repeated string ProductIds = 2;
+}
+message SubscriptionsProductReply {
+  repeated SubscriptionProductItem Products = 1;
+  JewelPurchaseRestriction PurchaseRestriction = 2;
+}
+message SubscriptionsBeginPurchaseRequest {
+  int32 DeviceType = 1;
+  string ProductId = 2;
+}
+message SubscriptionsBeginPurchaseReply {
+  Status Status = 1;
+}
+message SubscriptionsCommitPurchaseRequest {
+  int32 DeviceType = 1;
+  string ProductId = 2;
+  string Receipt = 3;
+  string ReceiptTransactionId = 4;
+}
+message SubscriptionsCommitPurchaseReply {
+  Status Status = 1;
+}
+message SubscriptionsCurrentContractReply {
+  repeated SubscriptionContractInfo Contracts = 1;
+  bool HasReward = 2;
+  repeated string PurchasingProductIds = 3;
+}
+message SubscriptionsRestoreRequest {
+  int32 DeviceType = 1;
+  repeated string Receipts = 2;
+}
+message SubscriptionsRestoreReply {
+  Status Status = 1;
+}
+message SubscriptionsValidContractRequest {
+  int32 DeviceType = 1;
+  repeated string Receipts = 2;
+}
+message SubscriptionsValidContractReply {
+  bool Success = 1;
+}
+message SubscriptionsReceiveRewardReply {
+  repeated PresentItemOperation PresentItemOperations = 1;
+}
+message Tutorial {
+  uint32 MasterTutorialCode = 1;
+}
+message TutorialsEndStageRequest {
+}
+message TutorialsEndStageReply {
+  repeated StageOperation StageOperations = 1;
+  repeated ConsumableItemOperation ConsumableItemOperations = 2;
+}
+message TutorialsAlreadyReadListRequest {
+}
+message TutorialsAlreadyReadListReply {
+  repeated Tutorial Tutorials = 1;
+}
+message TutorialsReadRequest {
+  uint32 MasterTutorialCode = 1;
+}
+message TutorialsReadReply {
+}
+message User {
+  string UserKey = 1;
+  uint32 Exp = 2;
+  uint32 Level = 3;
+}
+message UserOperation {
+  OperationType Type = 1;
+  User Current = 2;
+  repeated UserChange Changes = 3;
+}
+message UserChange {
+  uint32 Id = 1;
+  int32 Exp = 2;
+  int32 Level = 3;
+}
+message UserProfile {
+  string FriendId = 1;
+  string Name = 2;
+  uint32 MasterProfileIconCode = 3;
+}
+message UserProfilesYouReply {
+  UserProfile Profile = 1;
+}
+message UserProfilesUpdateNameRequest {
+  string Name = 1;
+}
+message UserProfilesUpdateNameReply {
+  bool Success = 1;
+}
+message UserProfilesUpdateProfileIconRequest {
+  uint32 MasterProfileIconCode = 1;
+}
+message UserProfilesUpdateProfileIconReply {
+  bool Success = 1;
+}
+message UserProfilesOtherProfileRequest {
+  string FriendId = 1;
+}
+message UserProfilesOtherProfileReply {
+  string UserKey = 1;
+  UserProfile Profile = 2;
+  MonsterAssociations MonsterAssociations = 3;
+  repeated Equipment Equipments = 4;
+  repeated EquipmentAlchemyPassiveSkill EquipmentAlchemyPassiveSkills = 5;
+}
+message UsersCreateReply {
+  bool Success = 1;
+}
+message UsersExistingReply {
+  bool Existing = 1;
+  string UserKey = 2;
+}
+message UsersYouReply {
+  User User = 1;
+  Stamina Stamina = 2;
+  UserProfile Profile = 3;
+  string InquiryId = 4;
+  uint32 LoginDays = 5;
+}
+message WarningsConfirmReply {
+  bool Confirmed = 1;
+}
+message WaypointsTrackRequest {
+  string Waypoint = 1;
+  string AdvertisingId = 2;
+}
+message WaypointsTrackReply {
+}
+service Achievements {
+  rpc GroupList (AchievementsGroupListRequest) returns (AchievementsGroupListReply) {}
+  rpc UnlockedList (AchievementsUnlockedListRequest) returns (AchievementsUnlockedListReply) {}
+  rpc Progresses (AchievementsProgressesRequest) returns (AchievementsProgressesReply) {}
+  rpc Unlock (Empty) returns (AchievementsUnlockReply) {}
+  rpc SpecifiedUnlock (AchievementsSpecifiedUnlockRequest) returns (AchievementsUnlockReply) {}
+  rpc UnlockableExisting (Empty) returns (AchievementsUnlockableExistingReply) {}
+  rpc UnlockedLogList (AchievementsUnlockedLogListRequest) returns (AchievementsUnlockedLogListReply) {}
+}
+service ActionLogs {
+  rpc GainedList (ActionLogsGainedListRequest) returns (ActionLogsGainedListReply) {}
+  rpc ConsumedList (ActionLogsConsumedListRequest) returns (ActionLogsConsumedListReply) {}
+}
+service ActiveSkills {
+  rpc All (ActiveSkillsAllRequest) returns (ActiveSkillsAllReply) {}
+  rpc Enhance (ActiveSkillsEnhanceRequest) returns (ActiveSkillsEnhanceReply) {}
+  rpc Learn (ActiveSkillsLearnRequest) returns (ActiveSkillsLearnReply) {}
+}
+service AdventureParties {
+  rpc All (Empty) returns (AdventurePartiesAllReply) {}
+  rpc Update (AdventurePartiesUpdateRequest) returns (AdventurePartiesUpdateReply) {}
+}
+service Adventures {
+  rpc Start (AdventuresStartRequest) returns (AdventuresStartReply) {}
+  rpc End (AdventuresEndRequest) returns (AdventuresEndReply) {}
+  rpc Continue (Empty) returns (AdventuresContinueReply) {}
+  rpc CurrentContinueCount (Empty) returns (AdventuresCurrentContinueCountReply) {}
+  rpc Restore (Empty) returns (AdventuresRestoreReply) {}
+  rpc Skip (AdventuresSkipRequest) returns (AdventuresSkipReply) {}
+  rpc Sorties (Empty) returns (SortiesReply) {}
+  rpc ResetSortie (ResetSortieRequest) returns (ResetSortieReply) {}
+  rpc Campaigns (Empty) returns (AdventuresCampaignsReply) {}
+}
+service ApiTime {
+  rpc Sync (ApiTimeSyncRequest) returns (ApiTimeSyncReply) {}
+}
+service Areas {
+  rpc All (Empty) returns (AreasAllReply) {}
+}
+service Arenas {
+  rpc Top (Empty) returns (ArenasTopReply) {}
+  rpc Competition (ArenasCompetitionRequest) returns (ArenasCompetitionReply) {}
+  rpc Party (ArenasPartyRequest) returns (ArenasPartyReply) {}
+  rpc UpdateParty (ArenasUpdatePartyRequest) returns (ArenasUpdatePartyReply) {}
+  rpc LotOpponents (ArenasLotOpponentsRequest) returns (ArenasLotOpponentsReply) {}
+  rpc Start (ArenasStartRequest) returns (ArenasStartReply) {}
+  rpc TrialStart (ArenasStartRequest) returns (ArenasStartReply) {}
+  rpc PlanTactics (ArenasPlanTacticsRequest) returns (ArenasPlanTacticsReply) {}
+  rpc End (ArenasEndRequest) returns (ArenasEndReply) {}
+  rpc Ranking (ArenasRankingRequest) returns (ArenasRankingReply) {}
+  rpc Profile (ArenasProfileRequest) returns (ArenasProfileReply) {}
+  rpc ReceiveReward (ArenasReceiveRewardRequest) returns (ArenasReceiveRewardReply) {}
+  rpc Restore (Empty) returns (ArenasRestoreReply) {}
+  rpc BattleLogs (ArenasBattleLogsRequest) returns (ArenasBattleLogsReply) {}
+}
+service Auths {
+  rpc PrepareSession (AuthsPrepareSessionRequest) returns (AuthsPrepareSessionReply) {}
+  rpc Signup (AuthsSignupRequest) returns (AuthsLoginReply) {}
+  rpc Login (AuthsLoginRequest) returns (AuthsLoginReply) {}
+  rpc Verify (AuthsVerifyRequest) returns (AuthsVerifyReply) {}
+}
+service BattleRoads {
+  rpc Parties (BattleRoadsPartiesRequest) returns (BattleRoadsPartiesReply) {}
+  rpc UpdateParty (BattleRoadsUpdatePartyRequest) returns (BattleRoadsUpdatePartyReply) {}
+  rpc Start (BattleRoadsStartRequest) returns (BattleRoadsStartReply) {}
+  rpc End (BattleRoadsEndRequest) returns (BattleRoadsEndReply) {}
+  rpc Continue (Empty) returns (BattleRoadsContinueReply) {}
+  rpc CurrentContinueCount (Empty) returns (BattleRoadsCurrentContinueCountReply) {}
+  rpc Restore (Empty) returns (BattleRoadsRestoreReply) {}
+  rpc Skip (BattleRoadsSkipRequest) returns (BattleRoadsSkipReply) {}
+}
+service Clients {
+  rpc StatusList (Empty) returns (ClientsStatusListReply) {}
+}
+service ConsumableItems {
+  rpc All (ConsumableItemsAllRequest) returns (ConsumableItemsAllReply) {}
+}
+service Entrypoints {
+  rpc Current (EntrypointsCurrentRequest) returns (EntrypointsCurrentReply) {}
+}
+service Equipments {
+  rpc All (EquipmentsAllRequest) returns (EquipmentsAllReply) {}
+  rpc Alchemize (EquipmentsAlchemizeRequest) returns (EquipmentsAlchemizeReply) {}
+  rpc FinishAlchemize (EquipmentsFinishAlchemizeRequest) returns (EquipmentsFinishAlchemizeReply) {}
+  rpc Lock (EquipmentsLockRequest) returns (EquipmentsLockReply) {}
+}
+service EventPortals {
+  rpc List (Empty) returns (EventPortalsListReply) {}
+}
+service ExchangeShops {
+  rpc List (ExchangeShopsListRequest) returns (ExchangeShopsListReply) {}
+  rpc Buy (ExchangeShopsBuyRequest) returns (ExchangeShopsBuyReply) {}
+}
+service FeatureGuidances {
+  rpc AlreadyReadList (Empty) returns (FeatureGuidancesAlreadyReadListReply) {}
+  rpc Read (FeatureGuidancesReadRequest) returns (Empty) {}
+}
+service Gachas {
+  rpc List (GachasListRequest) returns (GachasListReply) {}
+  rpc Lot (GachasLotRequest) returns (GachasLotReply) {}
+  rpc LotRetryableGacha (GachasLotRetryableGachaRequest) returns (GachasLotRetryableGachaReply) {}
+  rpc FinishLotRetryableGacha (GachasFinishLotRetryableGachaRequest) returns (GachasLotReply) {}
+  rpc Trigger (GachasTriggerRequest) returns (GachasTriggerReply) {}
+  rpc GroupNameList (GachasGroupNameListRequest) returns (GachasGroupNameListReply) {}
+}
+service IAPs {
+  rpc Init (Empty) returns (IAPsInitReply) {}
+}
+service Jewels {
+  rpc ListProduct (Empty) returns (JewelsListProductReply) {}
+  rpc RegisterBirthday (JewelsRegisterBirthdayRequest) returns (JewelsRegisterBirthdayReply) {}
+  rpc BeginPurchase (JewelsBeginPurchaseRequest) returns (JewelsBeginPurchaseReply) {}
+  rpc CommitPurchase (JewelsCommitPurchaseRequest) returns (JewelsCommitPurchaseReply) {}
+  rpc Current (Empty) returns (JewelsCurrentReply) {}
+}
+service LoginBonuses {
+  rpc All (Empty) returns (LoginBonusesAllReply) {}
+  rpc Receive (Empty) returns (LoginBonusesReceiveReply) {}
+}
+service Logs {
+  rpc Output (LogsOutputRequest) returns (LogsOutputReply) {}
+}
+service Monsters {
+  rpc All (MonstersAllRequest) returns (MonsterAssociations) {}
+  rpc Enhance (MonstersEnhanceRequest) returns (MonstersEnhanceReply) {}
+  rpc RankUp (MonstersRankUpRequest) returns (MonstersRankUpReply) {}
+  rpc Equip (MonstersEquipRequest) returns (MonstersEquipReply) {}
+  rpc EquipAll (MonstersEquipAllRequest) returns (MonstersEquipAllReply) {}
+  rpc Awaken (MonstersAwakenRequest) returns (MonstersAwakenReply) {}
+  rpc GiveNickname (MonstersGiveNicknameRequest) returns (Empty) {}
+}
+service Mycards {
+  rpc ListProduct (Empty) returns (MycardsListProductReply) {}
+  rpc BeginPurchase (MycardsBeginPurchaseRequest) returns (MycardsBeginPurchaseReply) {}
+  rpc CommitPurchase (MycardsCommitPurchaseRequest) returns (MycardsCommitPurchaseReply) {}
+}
+service News {
+  rpc List (NewsListRequest) returns (NewsListReply) {}
+  rpc Detail (NewsDetailRequest) returns (NewsDetailReply) {}
+  rpc EmbeddedContents (NewsEmbeddedContentsRequest) returns (NewsEmbeddedContentsReply) {}
+  rpc UrlList (UrlListRequest) returns (UrlListReply) {}
+}
+service PointCards {
+  rpc Current (Empty) returns (PointCardsCurrentReply) {}
+  rpc ReceivePoint (Empty) returns (PointCardsReceivePointReply) {}
+  rpc Purchase (PointCardsPurchaseRequest) returns (PointCardsPurchaseReply) {}
+  rpc ProductPacks (Empty) returns (PointCardsProductPacksReply) {}
+}
+service PostalPackages {
+  rpc All (Empty) returns (PostalPackagesAllReply) {}
+  rpc Receive (PostalPackagesReceiveRequest) returns (PostalPackagesReceiveReply) {}
+}
+service PowerLevels {
+  rpc Update (PowerLevelsUpdateRequest) returns (PowerLevelsUpdateReply) {}
+}
+service PresentBox {
+  rpc Items (PresentBoxItemsRequest) returns (PresentBoxItemsReply) {}
+  rpc Receive (PresentBoxReceiveRequest) returns (PresentBoxReceiveReply) {}
+  rpc Logs (PresentBoxLogsRequest) returns (PresentBoxLogsReply) {}
+}
+service ProfileIcons {
+  rpc All (ProfileIconsAllRequest) returns (ProfileIconsAllReply) {}
+}
+service Rankings {
+  rpc PowerLevelList (RankingsPowerLevelListRequest) returns (RankingsPowerLevelListReply) {}
+  rpc PowerLevelSpecifiedRankingList (RankingsPowerLevelSpecifiedRankingListRequest) returns (RankingsPowerLevelSpecifiedRankingListReply) {}
+}
+service StageMissionCompletions {
+  rpc All (Empty) returns (StageMissionCompletionsAllReply) {}
+}
+service Stages {
+  rpc All (Empty) returns (StagesAllReply) {}
+}
+service Staminas {
+  rpc Current (StaminasCurrentRequest) returns (StaminasCurrentReply) {}
+  rpc Charge (StaminasChargeRequest) returns (StaminasChargeReply) {}
+}
+service Subscriptions {
+  rpc ProductGet (SubscriptionsProductRequest) returns (SubscriptionsProductReply) {}
+  rpc BeginPurchase (SubscriptionsBeginPurchaseRequest) returns (SubscriptionsBeginPurchaseReply) {}
+  rpc CommitPurchase (SubscriptionsCommitPurchaseRequest) returns (SubscriptionsCommitPurchaseReply) {}
+  rpc CurrentContract (Empty) returns (SubscriptionsCurrentContractReply) {}
+  rpc Restore (SubscriptionsRestoreRequest) returns (SubscriptionsRestoreReply) {}
+  rpc ValidContract (SubscriptionsValidContractRequest) returns (SubscriptionsValidContractReply) {}
+  rpc ReceiveReward (Empty) returns (SubscriptionsReceiveRewardReply) {}
+}
+service Tutorials {
+  rpc EndStage (TutorialsEndStageRequest) returns (TutorialsEndStageReply) {}
+  rpc AlreadyReadList (TutorialsAlreadyReadListRequest) returns (TutorialsAlreadyReadListReply) {}
+  rpc Read (TutorialsReadRequest) returns (TutorialsReadReply) {}
+}
+service UserProfiles {
+  rpc You (Empty) returns (UserProfilesYouReply) {}
+  rpc UpdateName (UserProfilesUpdateNameRequest) returns (UserProfilesUpdateNameReply) {}
+  rpc UpdateProfileIcon (UserProfilesUpdateProfileIconRequest) returns (UserProfilesUpdateProfileIconReply) {}
+  rpc OtherProfile (UserProfilesOtherProfileRequest) returns (UserProfilesOtherProfileReply) {}
+}
+service Users {
+  rpc Create (Empty) returns (UsersCreateReply) {}
+  rpc You (Empty) returns (UsersYouReply) {}
+  rpc Existing (Empty) returns (UsersExistingReply) {}
+}
+service Warnings {
+  rpc Confirm (Empty) returns (WarningsConfirmReply) {}
+}
+service Waypoints {
+  rpc Track (WaypointsTrackRequest) returns (WaypointsTrackReply) {}
+}
+

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonQuestHact", "DragonQuestHact\DragonQuestHact.csproj", "{A28454D9-A268-4390-8F16-094894C936AC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A28454D9-A268-4390-8F16-094894C936AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28454D9-A268-4390-8F16-094894C936AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28454D9-A268-4390-8F16-094894C936AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28454D9-A268-4390-8F16-094894C936AC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F16FF416-2667-4BF7-89BB-FF987F3E2024}
+	EndGlobalSection
+EndGlobal
